@@ -1,0 +1,267 @@
+{
+  "email": {
+    "options": {
+      "base": "Email",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "mail",
+    "public": false
+  },
+  "user": {
+    "options": {
+      "base": "User",
+      "relations": {
+        "accessTokens": {
+          "model": "accessToken",
+          "type": "hasMany",
+          "foreignKey": "userId"
+        },
+        "locations": {
+          "model": "location",
+          "type": "hasMany",
+          "foreignKey": "userId"
+        }
+      },
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "*",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$everyone",
+          "property": "create"
+        },
+        {
+          "accessType": "*",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        }
+      ]
+    },
+    "dataSource": "mysql",
+    "public": true,
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "created": {
+        "type": "date"
+      },
+      "updated": {
+        "type": "date"
+      }
+    },
+    "plural": "users"
+  },
+  "accessToken": {
+    "options": {
+      "base": "AccessToken",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "mysql",
+    "public": true
+  },
+  "application": {
+    "options": {
+      "base": "Application",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": true
+  },
+  "acl": {
+    "options": {
+      "base": "ACL",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": false
+  },
+  "roleMapping": {
+    "options": {
+      "base": "RoleMapping",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": false
+  },
+  "role": {
+    "options": {
+      "base": "Role",
+      "relations": {
+        "principals": {
+          "type": "hasMany",
+          "model": "roleMapping",
+          "foreignKey": "roleId"
+        }
+      },
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": false
+  },
+  "scope": {
+    "options": {
+      "base": "Scope",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": false
+  },
+  "push": {
+    "options": {
+      "base": "Push",
+      "plural": "push",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "push"
+  },
+  "installation": {
+    "options": {
+      "base": "Installation",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": true
+  },
+  "notification": {
+    "options": {
+      "base": "Notification",
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        }
+      ]
+    },
+    "dataSource": "db",
+    "public": true
+  },
+  "location": {
+    "options": {
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        },
+        {
+          "accessType": "WRITE",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        }
+      ]
+    },
+    "properties": {
+      "x": {
+        "type": "string"
+      },
+      "y": {
+        "type": "string"
+      },
+      "userId": {
+        "type": "object"
+      },
+      "created": {
+        "type": "date"
+      },
+      "updated": {
+        "type": "date"
+      }
+    },
+    "public": true,
+    "dataSource": "mysql",
+    "plural": "locations"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "main": "app.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "loopback": "1.x >=1.7.0",
+    "loopback-datasource-juggler": "latest",
+    "loopback-connector-mysql": "^1.2.2",
+    "loopback-explorer": "^1.1.1"
+  },
+  "optionalDependencies": {
+    "loopback-explorer": "~1.1.0",
+    "loopback-push-notification": "~1.2.0"
+  },
+  "name": "server"
+}

@@ -1,0 +1,26 @@
+{
+  "db": {
+    "defaultForType": "db",
+    "connector": "memory"
+  },
+  "mysql": {
+    "defaultForType": "mysql",
+    "connector": "mysql",
+    "host": "mysql.dd",
+    "port": 3306,
+    "database": "d32h3_festi",
+    "username": "d32h3_festi",
+    "password": "J2nm3fl"
+  },
+  "push": {
+    "defaultForType": "push",
+    "connector": "loopback-push-notification",
+    "installation": "installation",
+    "notification": "notification",
+    "application": "application"
+  },
+  "mail": {
+    "defaultForType": "mail",
+    "connector": "mail"
+  }
+}
