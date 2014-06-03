@@ -18,38 +18,12 @@
     "options": {
       "base": "User",
       "relations": {
-        "accessTokens": {
-          "model": "accessToken",
-          "type": "hasMany",
-          "foreignKey": "userId"
-        },
         "locations": {
-          "model": "location",
+          "model": "Location",
           "type": "hasMany",
           "foreignKey": "userId"
         }
-      },
-      "acls": [
-        {
-          "accessType": "*",
-          "permission": "DENY",
-          "principalType": "ROLE",
-          "principalId": "$everyone"
-        },
-        {
-          "accessType": "*",
-          "permission": "ALLOW",
-          "principalType": "ROLE",
-          "principalId": "$everyone",
-          "property": "create"
-        },
-        {
-          "accessType": "*",
-          "permission": "ALLOW",
-          "principalType": "ROLE",
-          "principalId": "$owner"
-        }
-      ]
+      }
     },
     "dataSource": "mysql",
     "public": true,
