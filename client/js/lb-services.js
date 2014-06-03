@@ -1,6 +1,6 @@
 'use strict';
 
-var urlBase = "/api";
+var urlBase = "http://s01.chase.sillevis.net:20001/api";
 
 /**
  * @ngdoc overview
