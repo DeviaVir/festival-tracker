@@ -1,6 +1,6 @@
 angular.module('defqon.controllers', ['defqon.services'])
 
-.controller('AppCtrl', function($scope, User, $location, AppAuth) {
+.controller('AppCtrl', function($scope, User, Location, $location, AppAuth) {
   AppAuth.ensureHasCurrentUser(User);
   $scope.currentUser = AppAuth.currentUser;
 
@@ -13,6 +13,8 @@ angular.module('defqon.controllers', ['defqon.services'])
       });
     }}
   ];
+
+  console.log($scope.currentUser);
 
   $scope.toggleLeft = function() {
     $scope.sideMenuController.toggleLeft();

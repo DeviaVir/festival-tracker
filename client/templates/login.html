@@ -1,10 +1,7 @@
 <header class="bar bar-header bar-assertive">
   <h1 class="title">Login or Register</h1>
 </header>
-<content
-    has-header="true"
-    scroll="true"
-    >
+<content has-header="true" scroll="true">
   <div class="card">
     <div class="item item-divider">
       Sign In
@@ -36,10 +33,7 @@
     <form class="item item-text-wrap" ng-submit="register()">
       <div class="list list-inset">
         <label class="item item-input">
-          <input type="text" placeholder="First Name" ng-model="registration.firstName">
-        </label>
-        <label class="item item-input">
-          <input type="text" placeholder="Last Name" ng-model="registration.lastName">
+          <input type="text" placeholder="Name" ng-model="registration.name">
         </label>
         <label class="item item-input">
           <input type="text" placeholder="Email" ng-model="registration.email">
@@ -48,7 +42,7 @@
           <input type="password" placeholder="Password" ng-model="registration.password">
         </label>
         <label class="item item-input">
-          <input type="password" placeholder="Confrim Password" ng-model="confirmPassword">
+          <input type="password" placeholder="Confirm Password" ng-model="confirmPassword">
         </label>
       </div>
       <button type="submit" class="button button-full button-positive">

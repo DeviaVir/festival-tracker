@@ -66,6 +66,64 @@
     },
     "plural": "users"
   },
+  "location": {
+    "options": {
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        },
+        {
+          "accessType": "WRITE",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        }  
+      ],
+      "relations": {
+        "user": {
+          "model": "User",
+          "type": "belongsTo",
+          "foreignKey": "userId"
+        }
+      }
+    },
+    "properties": {
+      "id": {
+        "type": "string",
+        "id": true
+      },
+      "x": {
+        "type": "string"
+      },
+      "y": {
+        "type": "string"
+      },
+      "created": {
+        "type": "date"
+      },
+      "updated": {
+        "type": "date"
+      }
+    },
+    "public": true,
+    "dataSource": "mysql",
+    "plural": "locations"
+  },
   "accessToken": {
     "options": {
       "base": "AccessToken",
@@ -207,55 +265,5 @@
     },
     "dataSource": "db",
     "public": true
-  },
-  "location": {
-    "options": {
-      "acls": [
-        {
-          "accessType": "*",
-          "permission": "DENY",
-          "principalType": "ROLE",
-          "principalId": "$everyone"
-        },
-        {
-          "accessType": "READ",
-          "permission": "ALLOW",
-          "principalType": "ROLE",
-          "principalId": "$everyone"
-        },
-        {
-          "accessType": "READ",
-          "permission": "ALLOW",
-          "principalType": "ROLE",
-          "principalId": "$owner"
-        },
-        {
-          "accessType": "WRITE",
-          "permission": "ALLOW",
-          "principalType": "ROLE",
-          "principalId": "$owner"
-        }
-      ]
-    },
-    "properties": {
-      "x": {
-        "type": "string"
-      },
-      "y": {
-        "type": "string"
-      },
-      "userId": {
-        "type": "object"
-      },
-      "created": {
-        "type": "date"
-      },
-      "updated": {
-        "type": "date"
-      }
-    },
-    "public": true,
-    "dataSource": "mysql",
-    "plural": "locations"
   }
 }
