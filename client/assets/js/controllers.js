@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['starter.services'])
+angular.module('defqon.controllers', ['defqon.services'])
 
 .controller('AppCtrl', function($scope, User, $location, AppAuth) {
     AppAuth.ensureHasCurrentUser(User);

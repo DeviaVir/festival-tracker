@@ -1,4 +1,4 @@
-angular.module('starter.services', ['lbServices'])
+angular.module('defqon.services', ['lbServices'])
   .factory('AppAuth', function() {
     return {
       currentUser: null,

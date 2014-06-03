@@ -13,3 +13,7 @@
 node_modules
 
 client/sftp-config.json
+
+*.scssc
+
+*.map
