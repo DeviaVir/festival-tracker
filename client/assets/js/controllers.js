@@ -14,8 +14,6 @@ angular.module('defqon.controllers', ['defqon.services'])
     }}
   ];
 
-  console.log($scope.currentUser);
-
   $scope.toggleLeft = function() {
     $scope.sideMenuController.toggleLeft();
   };
@@ -34,25 +32,58 @@ angular.module('defqon.controllers', ['defqon.services'])
       }
     }
   };
+
   angular.extend($scope, {
     center: {
       lat: 52.4311702,
       lng: 5.7474867,
       zoom: 13
     },
-    markers: {
-      userMarker: {
-        lat: 52.4351996,
-        lng: 5.6906668,
-        message: $scope.currentUser.name,
-        focus: false,
-        draggable: false
-      }
-    },
     tiles: tilesDict.opencyclemap,
     defaults: {
-      scrollWheelZoom: false
+      scrollWheelZoom: false,
+      tileLayerOptions: {
+          opacity: 0.9,
+          detectRetina: true,
+          reuseTiles: true,
+      }
     }
+  });
+  Location.find({where: {userId: $scope.currentUser.id}, limit: 10}, function(locations) {
+    var username = $scope.currentUser.name;
+    var scope = $scope;
+    var paths = [];
+    var count = 0;
+    var marker = {};
+    locations.forEach(function(c) {
+      if(count === 0) {
+        marker = {
+          lat: c.x,
+          lng: c.y,
+          message: username,
+          focus: false,
+          draggable: false
+        };
+      }
+
+      paths.push({
+        lat: c.x, lng: c.y
+      });
+      count++;
+    });
+    var data = {
+      paths: {
+        p1: {
+          color: '#ccc',
+          weight: 5,
+          latlngs: paths
+        }
+      },
+      markers: {
+        userMarker: marker
+      }
+    };
+    angular.extend(scope, data);
   });
 })
 
