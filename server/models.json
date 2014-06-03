@@ -218,12 +218,6 @@
           "principalId": "$everyone"
         },
         {
-          "accessType": "*",
-          "permission": "DENY",
-          "principalType": "ROLE",
-          "principalId": "$everyone"
-        },
-        {
           "accessType": "READ",
           "permission": "ALLOW",
           "principalType": "ROLE",

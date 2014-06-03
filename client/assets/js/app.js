@@ -2,7 +2,7 @@
 // 'defqon' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array or 'requires'
 // 'defqon.controllers' is found in controllers.js
-angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon.services', 'defqon.controllers'])
+angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon.services', 'defqon.controllers', 'leaflet-directive'])
 
 .config(function ($compileProvider){
   // Needed for routing to work

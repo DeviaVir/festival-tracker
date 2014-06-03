@@ -29,8 +29,10 @@ module.exports = function(grunt) {
           './assets/js/lb-services.js',
           './assets/js/services.js',
           './assets/js/app.js',
-          './assets/js/controllers.js'
-        ],   
+          './assets/js/controllers.js',
+          './assets/js/leaflet.js',
+          './assets/js/angular/leaflet.js'
+        ],
         tasks: ['concat:frontend','uglify:frontend'],
         options: {
           livereload: true
@@ -54,7 +56,9 @@ module.exports = function(grunt) {
           './assets/js/lb-services.js',
           './assets/js/services.js',
           './assets/js/app.js',
-          './assets/js/controllers.js'
+          './assets/js/controllers.js',
+          './assets/js/leaflet.js',
+          './assets/js/angular/leaflet.js'
         ],
         dest: './assets/js/package.js',
       },

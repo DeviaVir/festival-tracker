@@ -1,12 +1,19 @@
-#splash-page {
-  background-color: white;
+html, body, .pane, .view {
+	background: url('../img/bg.png') repeat #fef7e8;
 }
 #logo {
-  background: url('../img/ionic.png') no-repeat transparent;
-  width: 128px;
-  height: 128px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -64px 0px 0px -64px;
+	background: url('../img/logo.png') no-repeat transparent 0 0;
+	background-size: 100%;
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+	display: block;
 }
+.logo {
+	margin-bottom: -20px;
+}
+.bar.bar-assertive {
+	background-color: #cc2b32;
+}
+
+@import "leaflet";
