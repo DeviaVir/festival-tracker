@@ -19,12 +19,12 @@
       "base": "User",
       "relations": {
         "accessTokens": {
-          "model": "accessToken",
+          "model": "AccessToken",
           "type": "hasMany",
           "foreignKey": "userId"
         },
         "locations": {
-          "model": "location",
+          "model": "Location",
           "type": "hasMany",
           "foreignKey": "userId"
         }
