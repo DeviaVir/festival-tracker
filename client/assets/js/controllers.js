@@ -35,6 +35,7 @@ angular.module('defqon.controllers', ['defqon.services'])
   Location.find({where: {userId: $scope.currentUser.id}, limit: 10}, function(locations) {
     $scope.tPaths = [];
     $scope.count = 0;
+    locations = locations.reverse();
     locations.forEach(function(c) {
       if($scope.count === 0) {
         $scope.markers['user'].lat = parseFloat(c.x);
@@ -43,7 +44,7 @@ angular.module('defqon.controllers', ['defqon.services'])
       }
 
       $scope.tPaths.push({
-        lat: c.x, lng: c.y
+        lat: parseFloat(c.x), lng: parseFloat(c.y)
       });
       $scope.count++;
     });
@@ -77,9 +78,9 @@ angular.module('defqon.controllers', ['defqon.services'])
       y: position.coords.longitude,
       created: new Date(),
       updated: new Date()
-    }, function (err, result) {
+    }, function (result) {
       console.log('Location record is created: ', result);
-    })
+    });
   };
 
   var watchID = null;
@@ -98,7 +99,7 @@ angular.module('defqon.controllers', ['defqon.services'])
   }
 
   if (navigator.geolocation) {
-    var watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
+    watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
       $scope.sendLocation(position);
     }, function watchError(error) {
       console.log(error);
