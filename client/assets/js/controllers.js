@@ -18,20 +18,37 @@ angular.module('defqon.controllers', ['defqon.services'])
     $scope.sideMenuController.toggleLeft();
   };
 
-  var tilesDict = {
-    openstreetmap: {
-      url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      options: {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }
-    },
-    opencyclemap: {
-      url: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-      options: {
-        attribution: 'All maps &copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, map data &copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> (<a href="http://www.openstreetmap.org/copyright">ODbL</a>'
-      }
-    }
+  $scope.markers = {};
+  $scope.markers['user'] = {
+    lat: 0,
+    lng: 0,
+    message: 'Name',
+    focus: false,
+    draggable: false
   };
+  $scope.paths = {};
+  $scope.paths['p1'] = {
+    color: '#ccc',
+    weight: 5,
+    latlngs: [{lat: 0, lng: 0}]
+  };
+  Location.find({where: {userId: $scope.currentUser.id}, limit: 10}, function(locations) {
+    $scope.tPaths = [];
+    $scope.count = 0;
+    locations.forEach(function(c) {
+      if($scope.count === 0) {
+        $scope.markers['user'].lat = parseFloat(c.x);
+        $scope.markers['user'].lng = parseFloat(c.y);
+        $scope.markers['user'].message = $scope.currentUser.name;
+      }
+
+      $scope.tPaths.push({
+        lat: c.x, lng: c.y
+      });
+      $scope.count++;
+    });
+    $scope.paths['p1'].latlngs = $scope.tPaths;
+  });
 
   angular.extend($scope, {
     center: {
@@ -39,7 +56,6 @@ angular.module('defqon.controllers', ['defqon.services'])
       lng: 5.7474867,
       zoom: 13
     },
-    tiles: tilesDict.opencyclemap,
     defaults: {
       scrollWheelZoom: false,
       tileLayerOptions: {
@@ -47,43 +63,9 @@ angular.module('defqon.controllers', ['defqon.services'])
           detectRetina: true,
           reuseTiles: true,
       }
-    }
-  });
-  Location.find({where: {userId: $scope.currentUser.id}, limit: 10}, function(locations) {
-    var username = $scope.currentUser.name;
-    var scope = $scope;
-    var paths = [];
-    var count = 0;
-    var marker = {};
-    locations.forEach(function(c) {
-      if(count === 0) {
-        marker = {
-          lat: c.x,
-          lng: c.y,
-          message: username,
-          focus: false,
-          draggable: false
-        };
-      }
-
-      paths.push({
-        lat: c.x, lng: c.y
-      });
-      count++;
-    });
-    var data = {
-      paths: {
-        p1: {
-          color: '#ccc',
-          weight: 5,
-          latlngs: paths
-        }
-      },
-      markers: {
-        userMarker: marker
-      }
-    };
-    angular.extend(scope, data);
+    },
+    markers: $scope.markers,
+    paths: $scope.paths
   });
 })
 
@@ -106,7 +88,7 @@ angular.module('defqon.controllers', ['defqon.services'])
         $scope.loginError = res.data.error;
       }
     );
-  }
+  };
   $scope.register = function() {
     $scope.user = User.save($scope.registration,
       function() {
@@ -116,5 +98,5 @@ angular.module('defqon.controllers', ['defqon.services'])
         $scope.registerError = res.data.error;
       }
     );
-  }
+  };
 });
