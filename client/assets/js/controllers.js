@@ -29,10 +29,10 @@ angular.module('defqon.controllers', ['defqon.services'])
   $scope.paths = {};
   $scope.paths['p1'] = {
     color: '#937b58',
-    weight: 8,
+    weight: 1,
     latlngs: [{lat: 0, lng: 0}]
   };
-  Location.find({where: {userId: $scope.currentUser.id}, limit: 10}, function(locations) {
+  Location.find({where: {userId: $scope.currentUser.id}, limit: 5}, function(locations) {
     $scope.tPaths = [];
     $scope.count = 0;
     locations = locations.reverse();
@@ -57,7 +57,7 @@ angular.module('defqon.controllers', ['defqon.services'])
     center: {
       lat: 52.4361702,
       lng: 5.7484867,
-      zoom: 15
+      zoom: 10 //15 // = perfect defqon
     },
     defaults: {
       scrollWheelZoom: false,
@@ -83,28 +83,17 @@ angular.module('defqon.controllers', ['defqon.services'])
     });
   };
 
-  var watchID = null;
-  document.addEventListener("deviceready", onDeviceReady, false);
-  //
-  // Cordova is ready
-  //
-  function onDeviceReady() {
-    if (navigator.geolocation) {
-      var watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
-        $scope.sendLocation(position);
-      }, function watchError(error) {
-        console.log(error);
-      }, { timeout: 60000, enableHighAccuracy: true });
-    }
+  $scope.watchID = null;
+  if (navigator.geolocation) {
+    $scope.watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
+      $scope.sendLocation(position);
+    }, function watchError(error) {}, { timeout: 60000, enableHighAccuracy: true });
   }
 
-  if (navigator.geolocation) {
-    watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
-      $scope.sendLocation(position);
-    }, function watchError(error) {
-      console.log(error);
-    }, { timeout: 60000, enableHighAccuracy: true });
-  }
+  // Get other users to show in sidebar
+  User.find({limit: 100}, function(users) {
+    console.log(users);
+  });
 })
 
 .controller('LoginCtrl', function($scope, $routeParams, User, $location, AppAuth) {

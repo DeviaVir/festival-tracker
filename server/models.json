@@ -44,6 +44,12 @@
           "property": "create"
         },
         {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$authenticated"
+        },
+        {
           "accessType": "*",
           "permission": "ALLOW",
           "principalType": "ROLE",
