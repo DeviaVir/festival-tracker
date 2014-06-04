@@ -34,12 +34,12 @@
   </side-menu>
   <side-menu side="right">
     <header class="bar bar-header bar-assertive">
-      <h1 class="title">Recent</h1>
+      <h1 class="title">Crew</h1>
     </header>
     <content has-header="true">
       <ul class="list">
-        <li class="item" ng-repeat="item in currentUser.locations" ng-if="item.created">
-          {{ item.created | date:'medium' }}
+        <li class="item" ng-repeat="item in users">
+          <a href="/#/home/{{ item.id }}/{{ item.name }}" class="item">{{ item.name }}</a>
         </li>
       </ul>
     </content>

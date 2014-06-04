@@ -18,6 +18,10 @@ angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon
     templateUrl: 'templates/app.html',
     controller: 'AppCtrl'
   });
+  $routeProvider.when('/home/:userId/:userName', {
+    templateUrl: 'templates/app.html',
+    controller: 'AppCtrl'
+  });
 
   $routeProvider.when('/register', {
     templateUrl: 'templates/register.html',

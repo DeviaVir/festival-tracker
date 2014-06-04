@@ -1,6 +1,6 @@
 angular.module('defqon.controllers', ['defqon.services'])
 
-.controller('AppCtrl', function($scope, User, Location, $location, AppAuth) {
+.controller('AppCtrl', function($scope, User, Location, $location, AppAuth, $routeParams) {
   AppAuth.ensureHasCurrentUser(User);
   $scope.currentUser = AppAuth.currentUser;
 
@@ -32,7 +32,18 @@ angular.module('defqon.controllers', ['defqon.services'])
     weight: 1,
     latlngs: [{lat: 0, lng: 0}]
   };
-  Location.find({where: {userId: $scope.currentUser.id}, limit: 5}, function(locations) {
+
+  $scope.mapUserId = $scope.currentUser.id;
+  $scope.mapUserName = $scope.currentUser.name;
+  if('userId' in $routeParams)
+    $scope.mapUserId = $routeParams.userId;
+  if('userName' in $routeParams)
+    $scope.mapUserName = $routeParams.userName;
+
+  $scope.locationFilters = {'limit': 5, 'order': 'created ASC', 'where': {'userId': $scope.mapUserId}};
+  console.log($scope.locationFilters);
+  Location.find($scope.locationFilters, function(locations) {
+    console.log(locations);
     $scope.tPaths = [];
     $scope.count = 0;
     locations = locations.reverse();
@@ -40,7 +51,7 @@ angular.module('defqon.controllers', ['defqon.services'])
       if($scope.count === 0) {
         $scope.markers['user'].lat = parseFloat(c.x);
         $scope.markers['user'].lng = parseFloat(c.y);
-        $scope.markers['user'].message = $scope.currentUser.name;
+        $scope.markers['user'].message = $scope.mapUserName;
       }
 
       $scope.tPaths.push({
@@ -79,7 +90,7 @@ angular.module('defqon.controllers', ['defqon.services'])
       created: new Date(),
       updated: new Date()
     }, function (result) {
-      console.log('Location record is created: ', result);
+      console.log('Location updated: ', result);
     });
   };
 
@@ -91,8 +102,9 @@ angular.module('defqon.controllers', ['defqon.services'])
   }
 
   // Get other users to show in sidebar
-  User.find({limit: 100}, function(users) {
-    console.log(users);
+  $scope.users = []; $scope.userFilters = {'limit': 30, 'order': 'created ASC'};
+  User.find($scope.userFilters, function(users) {
+    $scope.users = users;
   });
 })
 
