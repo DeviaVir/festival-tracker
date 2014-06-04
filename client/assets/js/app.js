@@ -19,8 +19,6 @@ angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon
     controller: 'AppCtrl'
   });
 
-  // if the url matches something like /pet/2 then this route
-  // will fire off the PetCtrl controller (controllers.js)
   $routeProvider.when('/register', {
     templateUrl: 'templates/register.html',
     controller: 'RegisterCtrl'

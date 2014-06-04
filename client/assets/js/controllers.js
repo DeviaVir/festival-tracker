@@ -54,9 +54,9 @@ angular.module('defqon.controllers', ['defqon.services'])
 
   angular.extend($scope, {
     center: {
-      lat: 52.4311702,
-      lng: 5.7474867,
-      zoom: 13
+      lat: 52.4361702,
+      lng: 5.7484867,
+      zoom: 15
     },
     defaults: {
       scrollWheelZoom: false,
@@ -69,6 +69,41 @@ angular.module('defqon.controllers', ['defqon.services'])
     markers: $scope.markers,
     paths: $scope.paths
   });
+
+  $scope.sendLocation = function(position) {
+    Location.create({
+      userId: $scope.currentUser.id,
+      x: position.coords.latitude,
+      y: position.coords.longitude,
+      created: new Date(),
+      updated: new Date()
+    }, function (err, result) {
+      console.log('Location record is created: ', result);
+    })
+  };
+
+  var watchID = null;
+  document.addEventListener("deviceready", onDeviceReady, false);
+  //
+  // Cordova is ready
+  //
+  function onDeviceReady() {
+    if (navigator.geolocation) {
+      var watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
+        $scope.sendLocation(position);
+      }, function watchError(error) {
+        console.log(error);
+      }, { timeout: 60000, enableHighAccuracy: true });
+    }
+  }
+
+  if (navigator.geolocation) {
+    var watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
+      $scope.sendLocation(position);
+    }, function watchError(error) {
+      console.log(error);
+    }, { timeout: 60000, enableHighAccuracy: true });
+  }
 })
 
 .controller('LoginCtrl', function($scope, $routeParams, User, $location, AppAuth) {

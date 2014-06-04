@@ -79,7 +79,13 @@
           "accessType": "READ",
           "permission": "ALLOW",
           "principalType": "ROLE",
-          "principalId": "$everyone"
+          "principalId": "$authenticated"
+        },
+        {
+          "accessType": "WRITE",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$authenticated"
         },
         {
           "accessType": "READ",
