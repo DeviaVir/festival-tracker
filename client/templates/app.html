@@ -38,8 +38,8 @@
     </header>
     <content has-header="true">
       <ul class="list">
-        <li class="item" ng-repeat="item in currentUser.locations">
-          {{ item.date | date:'medium' }}
+        <li class="item" ng-repeat="item in currentUser.locations" ng-if="item.created">
+          {{ item.created | date:'medium' }}
         </li>
       </ul>
     </content>

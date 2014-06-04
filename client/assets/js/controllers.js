@@ -28,8 +28,8 @@ angular.module('defqon.controllers', ['defqon.services'])
   };
   $scope.paths = {};
   $scope.paths['p1'] = {
-    color: '#ccc',
-    weight: 5,
+    color: '#937b58',
+    weight: 8,
     latlngs: [{lat: 0, lng: 0}]
   };
   Location.find({where: {userId: $scope.currentUser.id}, limit: 10}, function(locations) {
@@ -48,6 +48,8 @@ angular.module('defqon.controllers', ['defqon.services'])
       $scope.count++;
     });
     $scope.paths['p1'].latlngs = $scope.tPaths;
+
+    $scope.currentUser.locations = locations;
   });
 
   angular.extend($scope, {
