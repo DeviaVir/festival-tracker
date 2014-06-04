@@ -13,6 +13,8 @@
 node_modules
 
 client/sftp-config.json
+client/assets/js/package.js
+client/assets/css/app.css
 
 *.scssc
 
