@@ -18,6 +18,36 @@ angular.module('defqon.controllers', ['defqon.services'])
     $scope.sideMenuController.toggleLeft();
   };
 
+  $scope.sendLocation = function(position) {
+    Location.create({
+      userId: $scope.currentUser.id,
+      x: position.coords.latitude,
+      y: position.coords.longitude,
+      created: new Date(),
+      updated: new Date()
+    }, function (result) {
+      console.log('Location updated: ', result);
+    });
+  };
+
+  $scope.watchID = null;
+  if (navigator.geolocation) {
+    $scope.watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
+      $scope.sendLocation(position);
+    }, function watchError(error) {
+      console.log(error);
+    }, { timeout: 200000, enableHighAccuracy: true });
+  }
+  else {
+    console.log('no navigator.geolocation');
+  }
+
+  // Get other users to show in sidebar
+  $scope.users = []; $scope.userFilters = {limit: 30, order: 'created ASC'};
+  User.find({filter: $scope.userFilters}, function(users) {
+    $scope.users = users;
+  });
+
   $scope.markers = {};
   $scope.markers['user'] = {
     lat: 0,
@@ -33,22 +63,22 @@ angular.module('defqon.controllers', ['defqon.services'])
     latlngs: [{lat: 0, lng: 0}]
   };
 
-  $scope.mapUserId = $scope.currentUser.id;
+  $scope.mapUserId = parseInt($scope.currentUser.id);
   $scope.mapUserName = $scope.currentUser.name;
   if('userId' in $routeParams)
-    $scope.mapUserId = $routeParams.userId;
+    $scope.mapUserId = parseInt($routeParams.userId);
   if('userName' in $routeParams)
     $scope.mapUserName = $routeParams.userName;
 
   $scope.locationFilters = {
     where: {
-      userId: parseInt($scope.mapUserId)
+      userId: $scope.mapUserId
     },
     limit: 5,
     order: 'created ASC'
   };
   console.log($scope.locationFilters);
-  Location.find($scope.locationFilters, function(locations) {
+  Location.find({filter: $scope.locationFilters}, function(locations) {
     console.log(locations);
     $scope.tPaths = [];
     $scope.count = 0;
@@ -84,31 +114,6 @@ angular.module('defqon.controllers', ['defqon.services'])
     },
     markers: $scope.markers,
     paths: $scope.paths
-  });
-
-  $scope.sendLocation = function(position) {
-    Location.create({
-      userId: $scope.currentUser.id,
-      x: position.coords.latitude,
-      y: position.coords.longitude,
-      created: new Date(),
-      updated: new Date()
-    }, function (result) {
-      console.log('Location updated: ', result);
-    });
-  };
-
-  $scope.watchID = null;
-  if (navigator.geolocation) {
-    $scope.watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
-      $scope.sendLocation(position);
-    }, function watchError(error) {}, { timeout: 60000, enableHighAccuracy: true });
-  }
-
-  // Get other users to show in sidebar
-  $scope.users = []; $scope.userFilters = {limit: 30, order: 'created ASC'};
-  User.find($scope.userFilters, function(users) {
-    $scope.users = users;
   });
 })
 
