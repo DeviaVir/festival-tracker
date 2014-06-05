@@ -7,7 +7,7 @@
     <div class="content has-header">
       <div class="card">
         <div class="item item-divider">
-          {{ currentUser.name }}
+          {{mapUserName}}
         </div>
         <div class="row">
           <div class="col col-100 col-center">
@@ -26,9 +26,14 @@
     </header>
     <content has-header="true">
       <ul class="list">
-        <a href="#" ng-click="item.action()" class="item" ng-repeat="item in options">
-          {{item.text}}
-        </a>
+        <li class="item">
+          {{currentUser.name}}
+        </li>
+        <li ng-repeat="item in options">
+          <a href="#" ng-click="item.action()" class="item">
+            {{item.text}}
+          </a>
+        </li>
       </ul>
     </content>
   </side-menu>
@@ -38,7 +43,7 @@
     </header>
     <content has-header="true">
       <ul class="list">
-        <li class="item" ng-repeat="item in users">
+        <li ng-repeat="item in users">
           <a href="/#/home/{{ item.id }}/{{ item.name }}" class="item">{{ item.name }}</a>
         </li>
       </ul>

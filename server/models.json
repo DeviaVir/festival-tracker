@@ -110,7 +110,8 @@
         "user": {
           "model": "User",
           "type": "belongsTo",
-          "foreignKey": "userId"
+          "foreignKey": "userId",
+          "index": true
         }
       }
     },
@@ -126,7 +127,8 @@
         "type": "string"
       },
       "created": {
-        "type": "date"
+        "type": "date",
+        "index": true
       },
       "updated": {
         "type": "date"

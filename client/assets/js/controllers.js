@@ -40,7 +40,13 @@ angular.module('defqon.controllers', ['defqon.services'])
   if('userName' in $routeParams)
     $scope.mapUserName = $routeParams.userName;
 
-  $scope.locationFilters = {'limit': 5, 'order': 'created ASC', 'where': {'userId': $scope.mapUserId}};
+  $scope.locationFilters = {
+    where: {
+      userId: parseInt($scope.mapUserId)
+    },
+    limit: 5,
+    order: 'created ASC'
+  };
   console.log($scope.locationFilters);
   Location.find($scope.locationFilters, function(locations) {
     console.log(locations);
@@ -60,8 +66,6 @@ angular.module('defqon.controllers', ['defqon.services'])
       $scope.count++;
     });
     $scope.paths['p1'].latlngs = $scope.tPaths;
-
-    $scope.currentUser.locations = locations;
   });
 
   angular.extend($scope, {
@@ -102,7 +106,7 @@ angular.module('defqon.controllers', ['defqon.services'])
   }
 
   // Get other users to show in sidebar
-  $scope.users = []; $scope.userFilters = {'limit': 30, 'order': 'created ASC'};
+  $scope.users = []; $scope.userFilters = {limit: 30, order: 'created ASC'};
   User.find($scope.userFilters, function(users) {
     $scope.users = users;
   });
