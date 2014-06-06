@@ -18,30 +18,6 @@ angular.module('defqon.controllers', ['defqon.services'])
     $scope.sideMenuController.toggleLeft();
   };
 
-  $scope.sendLocation = function(position) {
-    Location.create({
-      userId: $scope.currentUser.id,
-      x: position.coords.latitude,
-      y: position.coords.longitude,
-      created: new Date(),
-      updated: new Date()
-    }, function (result) {
-      console.log('Location updated: ', result);
-    });
-  };
-
-  $scope.watchID = null;
-  if (navigator.geolocation) {
-    $scope.watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
-      $scope.sendLocation(position);
-    }, function watchError(error) {
-      console.log(error);
-    }, { timeout: 200000, enableHighAccuracy: true });
-  }
-  else {
-    console.log('no navigator.geolocation');
-  }
-
   // Get other users to show in sidebar
   $scope.users = []; $scope.userFilters = {limit: 30, order: 'created ASC'};
   User.find({filter: $scope.userFilters}, function(users) {
@@ -63,39 +39,70 @@ angular.module('defqon.controllers', ['defqon.services'])
     latlngs: [{lat: 0, lng: 0}]
   };
 
-  $scope.mapUserId = parseInt($scope.currentUser.id);
-  $scope.mapUserName = $scope.currentUser.name;
-  if('userId' in $routeParams)
-    $scope.mapUserId = parseInt($routeParams.userId);
-  if('userName' in $routeParams)
-    $scope.mapUserName = $routeParams.userName;
-
-  $scope.locationFilters = {
-    where: {
-      userId: $scope.mapUserId
-    },
-    limit: 5,
-    order: 'created ASC'
-  };
-  console.log($scope.locationFilters);
-  Location.find({filter: $scope.locationFilters}, function(locations) {
-    console.log(locations);
-    $scope.tPaths = [];
-    $scope.count = 0;
-    locations = locations.reverse();
-    locations.forEach(function(c) {
-      if($scope.count === 0) {
-        $scope.markers['user'].lat = parseFloat(c.x);
-        $scope.markers['user'].lng = parseFloat(c.y);
-        $scope.markers['user'].message = $scope.mapUserName;
-      }
-
-      $scope.tPaths.push({
-        lat: parseFloat(c.x), lng: parseFloat(c.y)
+  $scope.currentUser.$promise.then(function() {
+    $scope.sendLocation = function(position) {
+      Location.create({
+        userId: $scope.currentUser.id,
+        x: position.coords.latitude,
+        y: position.coords.longitude,
+        created: new Date(),
+        updated: new Date()
+      }, function (result) {
+        console.log('Location updated: ', result);
       });
-      $scope.count++;
-    });
-    $scope.paths['p1'].latlngs = $scope.tPaths;
+    };
+
+    if($scope.watchID)
+      navigator.geolocation.clearWatch($scope.watchID);
+    $scope.watchID = null;
+    if (navigator.geolocation) {
+      $scope.watchID = navigator.geolocation.watchPosition(function watchPosition(position) {
+        $scope.sendLocation(position);
+      }, function watchError(error) {
+        console.log(error);
+      }, { timeout: 200000, enableHighAccuracy: true });
+    }
+    else {
+      console.log('no navigator.geolocation');
+    }
+
+    $scope.mapUserId = $scope.currentUser.id || 0;
+    $scope.mapUserName = $scope.currentUser.name || '';
+
+    if('userId' in $routeParams)
+      $scope.mapUserId = $routeParams.userId;
+    if('userName' in $routeParams)
+      $scope.mapUserName = $routeParams.userName;
+
+    $scope.locationFilters = {
+      where: {
+        userId: parseInt($scope.mapUserId)
+      },
+      limit: 5,
+      order: 'created DESC'
+    };
+    $scope.getLocation = function() {
+      console.log('Update the map');
+      Location.find({filter: $scope.locationFilters}, function(locations) {
+        $scope.tPaths = [];
+        $scope.count = 0;
+        locations.forEach(function(c) {
+          if($scope.count === 0) {
+            $scope.markers['user'].lat = parseFloat(c.x);
+            $scope.markers['user'].lng = parseFloat(c.y);
+            $scope.markers['user'].message = $scope.mapUserName;
+          }
+
+          $scope.tPaths.push({
+            lat: parseFloat(c.x), lng: parseFloat(c.y)
+          });
+          $scope.count++;
+        });
+        $scope.paths['p1'].latlngs = $scope.tPaths;
+      });
+    };
+    $scope.getLocation();
+    $scope.getLocationInterval = setInterval($scope.getLocation, 10000);
   });
 
   angular.extend($scope, {
