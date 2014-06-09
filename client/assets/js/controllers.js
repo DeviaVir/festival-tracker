@@ -74,15 +74,18 @@ angular.module('defqon.controllers', ['defqon.services'])
     if('userName' in $routeParams)
       $scope.mapUserName = $routeParams.userName;
 
+    $scope.mapUserId = parseInt($scope.mapUserId);
     $scope.locationFilters = {
       where: {
-        userId: parseInt($scope.mapUserId)
+        userId: $scope.mapUserId
       },
       limit: 5,
       order: 'created DESC'
     };
     $scope.getLocation = function() {
       console.log('Update the map');
+
+      // @todo: use a socket for this
       Location.find({filter: $scope.locationFilters}, function(locations) {
         $scope.tPaths = [];
         $scope.count = 0;
