@@ -74,7 +74,7 @@ angular.module('defqon.controllers', ['defqon.services'])
     if('userName' in $routeParams)
       $scope.mapUserName = $routeParams.userName;
 
-    $scope.mapUserId = parseInt($scope.mapUserId);
+    $scope.mapUserId = parseInt($scope.mapUserId, 10);
     $scope.locationFilters = {
       where: {
         userId: $scope.mapUserId
