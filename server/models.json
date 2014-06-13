@@ -27,6 +27,11 @@
           "model": "location",
           "type": "hasMany",
           "foreignKey": "userId"
+        },
+        "crews": {
+          "model": "crew",
+          "type": "belongsTo",
+          "foreignKey": "userId"
         }
       },
       "acls": [
@@ -72,6 +77,69 @@
       }
     },
     "plural": "users"
+  },
+  "crew": {
+    "options": {
+      "acls": [
+        {
+          "accessType": "*",
+          "permission": "DENY",
+          "principalType": "ROLE",
+          "principalId": "$everyone"
+        },
+        {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$authenticated"
+        },
+        {
+          "accessType": "WRITE",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$authenticated"
+        },
+        {
+          "accessType": "READ",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        },
+        {
+          "accessType": "WRITE",
+          "permission": "ALLOW",
+          "principalType": "ROLE",
+          "principalId": "$owner"
+        }  
+      ],
+      "relations": {
+        "user": {
+          "model": "User",
+          "type": "belongsTo",
+          "foreignKey": "userId",
+          "index": true
+        }
+      }
+    },
+    "properties": {
+      "id": {
+        "type": "string",
+        "id": true
+      },
+      "users": {
+        "type": "array"
+      },
+      "created": {
+        "type": "date",
+        "index": true
+      },
+      "updated": {
+        "type": "date"
+      }
+    },
+    "public": true,
+    "dataSource": "mysql",
+    "plural": "crews"
   },
   "location": {
     "options": {

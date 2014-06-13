@@ -1,10 +1,11 @@
 {
-  "name": "Pail",
-	"devDependencies": {
+  "name": "festival-tracker",
+  "devDependencies": {
     "grunt": "^0.4.2",
     "grunt-contrib-uglify": "^0.4.0",
     "grunt-contrib-watch": "^0.5.3",
     "grunt-contrib-concat": "^0.3.0",
-    "grunt-contrib-sass": "^0.7.2"
+    "grunt-contrib-sass": "^0.7.2",
+    "grunt-loopback-angular": "^1.1.0"
   }
 }

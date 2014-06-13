@@ -11,6 +11,15 @@ module.exports = function(grunt) {
         }
       }
     },
+    loopback_angular: {
+      services: {
+        options: {
+          input: '../server/app.js',
+          output: 'assets/js/lb-services.js',
+          apiUrl: 'http://s01.chase.sillevis.net:20001/api'
+        }
+      },
+    },
     watch: {
       css: {
         files: 'assets/**/*.scss',
@@ -81,6 +90,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-loopback-angular');
 
+  grunt.registerTask('loopback', ['loopback_angular','concat:frontend','uglify:frontend']);
   grunt.registerTask('default', ['watch']);
 };

@@ -98,6 +98,13 @@ angular.module('defqon.controllers', ['defqon.services'])
       // send message to server
       primus.send('sport', 'ping-pong');
 
+      // Use resource with primus-resource.
+      primus.$resource('Location').then(function (Location) {
+        Location.find({filter: $scope.locationFilters}, function(locations) {
+          console.log('Did something with a resource :/');
+        });
+      });
+
       // @todo: use a socket for this
       Location.find({filter: $scope.locationFilters}, function(locations) {
         $scope.tPaths = [];
