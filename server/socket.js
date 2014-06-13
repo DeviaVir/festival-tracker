@@ -8,14 +8,14 @@ var Res     = require('primus-resource');
 var http    = require('http');
 
 // Start up
-var server = http.createServer().listen(app.get('socket.port')),
+var server = http.createServer().listen(20002),
     primus = new Primus(server, { transformer: 'websockets', parser: 'JSON' });
 
 // Set up primus defaults
 primus.use('emitter', Emitter).use('multiplex', 'primus-multiplex').use('resource', Res);
 
 // Listen for connections
-console.log('Socket listening on %s', app.get('socket.port'));
+console.log('Socket listening on %s', 20002);
 primus.on('connection', function (spark) {
   console.log('Detected connection');
 

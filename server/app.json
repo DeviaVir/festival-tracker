@@ -1,6 +1,5 @@
 {
   "port": 20001,
-  "socket.port": 20002,
   "host": "0.0.0.0",
   "cookieSecret": "68adcf21-9673-4847-8fbe-baa0913de853"
 }
