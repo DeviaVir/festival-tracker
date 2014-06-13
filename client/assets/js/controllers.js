@@ -40,6 +40,8 @@ angular.module('defqon.controllers', ['defqon.services'])
   };
 
   $scope.currentUser.$promise.then(function() {
+
+    // Function used to send current location on change
     $scope.sendLocation = function(position) {
       primus.send('location', {
         userId: $scope.currentUser.id,
@@ -64,6 +66,7 @@ angular.module('defqon.controllers', ['defqon.services'])
       console.log('no navigator.geolocation');
     }
 
+    // Create the map
     $scope.mapUserId = $scope.currentUser.id || 0;
     $scope.mapUserName = $scope.currentUser.name || '';
 
