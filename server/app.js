@@ -2,6 +2,8 @@ var loopback = require('loopback');
 var path = require('path');
 var app = module.exports = loopback();
 var started = new Date();
+var Primus = require('primus');
+
 
 /*
  * 1. Configure LoopBack models and datasources
@@ -132,3 +134,24 @@ app.start = function() {
 if(require.main === module) {
   app.start();
 }
+
+
+/*
+ * 8. Socket
+ */
+var server = http.createServer().listen(app.get('socket.port')),
+    primus = new Primus(server);
+
+primus.on('connection', function (spark) {
+  // spark is the new connection.
+  console.log('Detected connection');
+
+  spark.on('data', function (data) {
+    console.log('Received data from spark');
+    console.log(data);
+
+    if('message' in data) {
+      //
+    }
+  });
+});

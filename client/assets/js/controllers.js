@@ -105,7 +105,7 @@ angular.module('defqon.controllers', ['defqon.services'])
       });
     };
     $scope.getLocation();
-    $scope.getLocationInterval = setInterval($scope.getLocation, 10000);
+    //$scope.getLocationInterval = setInterval($scope.getLocation, 10000);
   });
 
   angular.extend($scope, {
