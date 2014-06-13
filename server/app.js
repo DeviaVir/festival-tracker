@@ -135,7 +135,7 @@ app.start = function() {
     var server = http.createServer().listen(app.get('socket.port')),
         primus = new Primus(server);
 
-    console.log('Socket listening on %s%s', baseUrl, app.get('socket.port'));
+    console.log('Socket listening on %s%s', baseUrl.replace(app.get('port'), ''), app.get('socket.port'));
     primus.on('connection', function (spark) {
       // spark is the new connection.
       console.log('Detected connection');
