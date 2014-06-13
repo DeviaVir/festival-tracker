@@ -1,16 +1,18 @@
 // Initiate
-var loopback = require('loopback');
-var app = module.exports = loopback();
+var loopback  = require('loopback');
+var app       = module.exports = loopback();
 app.boot(__dirname);
 
 // Socket stuff
-var Primus = require('primus');
+var Primus  = require('primus');
 var Emitter = require('primus-emitter');
-var Res = require('primus-resource');
-var http = require('http');
+var Res     = require('primus-resource');
+var http    = require('http');
 
 // Resources
-var Location = loopback.getModel('Location');
+var DataSource  = require('loopback-datasource-juggler').DataSource;
+var ds          = new DataSource('mysql');
+var Location    = ds.define('Location', LocationDefinition);
 
 // Start up
 var server = http.createServer().listen(app.get('socket.port')),
