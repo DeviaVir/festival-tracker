@@ -154,6 +154,12 @@ app.start = function() {
       // receive incoming sport messages
       spark.on('location', function (data) {
         console.log('location', data); // => ping-pong
+        console.log('Creating location');
+
+        Location.create(data, function (result) {
+          console.log('Location updated: ', result);
+        });
+
         spark.send('map', 'Data received');
       });
 

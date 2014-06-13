@@ -48,16 +48,6 @@ angular.module('defqon.controllers', ['defqon.services'])
         created: new Date(),
         updated: new Date()
       });
-
-      Location.create({
-        userId: $scope.currentUser.id,
-        x: position.coords.latitude,
-        y: position.coords.longitude,
-        created: new Date(),
-        updated: new Date()
-      }, function (result) {
-        console.log('Location updated: ', result);
-      });
     };
 
     if($scope.watchID)
