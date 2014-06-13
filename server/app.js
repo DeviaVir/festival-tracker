@@ -3,6 +3,8 @@ var path = require('path');
 var app = module.exports = loopback();
 var started = new Date();
 var Primus = require('primus');
+var Emitter = require('primus-emitter');
+var Res = require('primus-resource');
 var http = require('http');
 
 /*
@@ -133,21 +135,29 @@ app.start = function() {
      * 8. Socket
      */
     var server = http.createServer().listen(app.get('socket.port')),
-        primus = new Primus(server);
+        primus = new Primus(server, { transformer: 'websockets', parser: 'JSON' });
+    primus
+      .use('emitter', Emitter)
+      .use('multiplex', 'primus-multiplex')
+      .use('resource', Res);
 
     console.log('Socket listening on %s%s', baseUrl.replace(app.get('port'), ''), app.get('socket.port'));
     primus.on('connection', function (spark) {
       // spark is the new connection.
       console.log('Detected connection');
 
-      spark.on('data', function (data) {
-        console.log('Received data from spark');
-        console.log(data);
+      spark.send('hi', 'good morning');
 
-        if('message' in data) {
-          //
-        }
+      // emit to news with ack
+      spark.send('news', 'good morning', function (data) {
+        console.log(data); // => 'by client'
       });
+
+      // receive incoming sport messages
+      spark.on('sport', function (data) {
+        console.log('sport', data); // => ping-pong
+      });
+
     });
   });
 };

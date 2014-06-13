@@ -2,11 +2,27 @@
 // 'defqon' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array or 'requires'
 // 'defqon.controllers' is found in controllers.js
-angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon.services', 'defqon.controllers', 'leaflet-directive'])
+angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon.services', 'defqon.controllers', 'leaflet-directive', 'primus'])
 
 .config(function ($compileProvider){
   // Needed for routing to work
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+})
+
+.config(function (primusProvider) {
+  primusProvider
+  // Define Primus endpoint.
+  .setEndpoint('http://s01.chase.sillevis.net:20002')
+  // Define Primus options.
+  .setOptions({
+    reconnect: {
+      minDelay: 100,
+      maxDelay: 60000,
+      retries: 100
+    }
+  })
+  // Define default multiplex option for resources.
+  .setDefaultMultiplex(false);
 })
 
 .config(function($routeProvider, $locationProvider, $httpProvider) {

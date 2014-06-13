@@ -1,6 +1,6 @@
 angular.module('defqon.controllers', ['defqon.services'])
 
-.controller('AppCtrl', function($scope, User, Location, $location, AppAuth, $routeParams) {
+.controller('AppCtrl', function($scope, User, Location, $location, AppAuth, $routeParams, primus) {
   AppAuth.ensureHasCurrentUser(User);
   $scope.currentUser = AppAuth.currentUser;
 
@@ -84,6 +84,19 @@ angular.module('defqon.controllers', ['defqon.services'])
     };
     $scope.getLocation = function() {
       console.log('Update the map');
+
+      // receive incoming hi msgs
+      primus.$on('hi', function (data) {
+        console.log(data); // => good morning
+      });
+
+      // respond ack to server
+      primus.$on('news', function (data, fn) {
+        fn('by client');
+      });
+
+      // send message to server
+      primus.send('sport', 'ping-pong');
 
       // @todo: use a socket for this
       Location.find({filter: $scope.locationFilters}, function(locations) {
