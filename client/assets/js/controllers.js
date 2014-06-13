@@ -85,13 +85,8 @@ angular.module('defqon.controllers', ['defqon.services'])
 
       // receive incoming map msgs
       primus.$on('map', function (data) {
-        console.log(data); // => good morning
+        console.log(data);
       });
-
-      // respond ack to server
-      //primus.$on('news', function (data, fn) {
-      //  fn('by client');
-      //});
 
       // @todo: use a socket for this
       Location.find({filter: $scope.locationFilters}, function(locations) {
