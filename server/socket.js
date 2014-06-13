@@ -1,13 +1,16 @@
 var loopback = require('loopback');
+var app = module.exports = loopback();
+
 var Primus = require('primus');
 var Emitter = require('primus-emitter');
 var Res = require('primus-resource');
 var http = require('http');
+
 var Location = loopback.getModel('Location');
 
 var server = http.createServer().listen(app.get('socket.port')),
     primus = new Primus(server, { transformer: 'websockets', parser: 'JSON' });
-    
+
 primus.use('emitter', Emitter).use('multiplex', 'primus-multiplex').use('resource', Res);
 
 console.log('Socket listening on %s%s', baseUrl.replace(app.get('port'), ''), app.get('socket.port'));
