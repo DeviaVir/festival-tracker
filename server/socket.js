@@ -25,8 +25,9 @@ primus.on('connection', function (spark) {
     console.log('Creating location');
 
     // Create the entries
-    Location.create(data, function (result) {
+    Location.create(data, function (result, error) {
       console.log('Location updated: ', result);
+      console.log(error);
     });
 
     // Send the update to interested parties (auto-updating their map)
