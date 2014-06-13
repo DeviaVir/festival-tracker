@@ -134,6 +134,8 @@ app.start = function() {
     /*
      * 8. Socket
      */
+    var Location = loopback.getModel('Location');
+
     var server = http.createServer().listen(app.get('socket.port')),
         primus = new Primus(server, { transformer: 'websockets', parser: 'JSON' });
     primus
@@ -143,13 +145,7 @@ app.start = function() {
 
     console.log('Socket listening on %s%s', baseUrl.replace(app.get('port'), ''), app.get('socket.port'));
     primus.on('connection', function (spark) {
-      // spark is the new connection.
       console.log('Detected connection');
-
-      // emit to news with ack
-      //spark.send('map', 'good morning', function (data) {
-      //  console.log(data); // => 'by client'
-      //});
 
       // receive incoming sport messages
       spark.on('location', function (data) {
