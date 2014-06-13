@@ -41,6 +41,14 @@ angular.module('defqon.controllers', ['defqon.services'])
 
   $scope.currentUser.$promise.then(function() {
     $scope.sendLocation = function(position) {
+      primus.send('location', {
+        userId: $scope.currentUser.id,
+        x: position.coords.latitude,
+        y: position.coords.longitude,
+        created: new Date(),
+        updated: new Date()
+      });
+
       Location.create({
         userId: $scope.currentUser.id,
         x: position.coords.latitude,
@@ -85,25 +93,15 @@ angular.module('defqon.controllers', ['defqon.services'])
     $scope.getLocation = function() {
       console.log('Update the map');
 
-      // receive incoming hi msgs
-      primus.$on('hi', function (data) {
+      // receive incoming map msgs
+      primus.$on('map', function (data) {
         console.log(data); // => good morning
       });
 
       // respond ack to server
-      primus.$on('news', function (data, fn) {
-        fn('by client');
-      });
-
-      // send message to server
-      primus.send('sport', 'ping-pong');
-
-      // Use resource with primus-resource.
-      primus.$resource('Location').then(function (Location) {
-        Location.find({filter: $scope.locationFilters}, function(locations) {
-          console.log('Did something with a resource :/');
-        });
-      });
+      //primus.$on('news', function (data, fn) {
+      //  fn('by client');
+      //});
 
       // @todo: use a socket for this
       Location.find({filter: $scope.locationFilters}, function(locations) {
