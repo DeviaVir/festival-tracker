@@ -146,16 +146,15 @@ app.start = function() {
       // spark is the new connection.
       console.log('Detected connection');
 
-      spark.send('hi', 'good morning');
-
       // emit to news with ack
-      spark.send('news', 'good morning', function (data) {
-        console.log(data); // => 'by client'
-      });
+      //spark.send('map', 'good morning', function (data) {
+      //  console.log(data); // => 'by client'
+      //});
 
       // receive incoming sport messages
-      spark.on('sport', function (data) {
-        console.log('sport', data); // => ping-pong
+      spark.on('location', function (data) {
+        console.log('location', data); // => ping-pong
+        spark.send('map', 'Data received');
       });
 
     });
