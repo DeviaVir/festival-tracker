@@ -2,10 +2,7 @@ var loopback = require('loopback');
 var path = require('path');
 var app = module.exports = loopback();
 var started = new Date();
-var Primus = require('primus');
-var Emitter = require('primus-emitter');
-var Res = require('primus-resource');
-var http = require('http');
+var Socket = require('./socket');
 
 /*
  * 1. Configure LoopBack models and datasources
@@ -130,36 +127,6 @@ app.start = function() {
     var baseUrl = 'http://' + app.get('host') + ':' + app.get('port');
     app.emit('started', baseUrl);
     console.log('LoopBack server listening @ %s%s', baseUrl, '/');
-
-    /*
-     * 8. Socket
-     */
-    var Location = loopback.getModel('Location');
-
-    var server = http.createServer().listen(app.get('socket.port')),
-        primus = new Primus(server, { transformer: 'websockets', parser: 'JSON' });
-    primus
-      .use('emitter', Emitter)
-      .use('multiplex', 'primus-multiplex')
-      .use('resource', Res);
-
-    console.log('Socket listening on %s%s', baseUrl.replace(app.get('port'), ''), app.get('socket.port'));
-    primus.on('connection', function (spark) {
-      console.log('Detected connection');
-
-      // receive incoming sport messages
-      spark.on('location', function (data) {
-        console.log('location', data); // => ping-pong
-        console.log('Creating location');
-
-        Location.create(data, function (result) {
-          console.log('Location updated: ', result);
-        });
-
-        spark.send('map', 'Data received');
-      });
-
-    });
   });
 };
 
