@@ -13,7 +13,7 @@ var server = http.createServer().listen(app.get('socket.port')),
 
 primus.use('emitter', Emitter).use('multiplex', 'primus-multiplex').use('resource', Res);
 
-console.log('Socket listening on %s%s', baseUrl.replace(app.get('port'), ''), app.get('socket.port'));
+console.log('Socket listening on %s', app.get('socket.port'));
 primus.on('connection', function (spark) {
   console.log('Detected connection');
 
