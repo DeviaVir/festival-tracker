@@ -2,7 +2,6 @@ var loopback = require('loopback');
 var path = require('path');
 var app = module.exports = loopback();
 var started = new Date();
-var Socket = require('./socket');
 
 /*
  * 1. Configure LoopBack models and datasources
@@ -127,6 +126,8 @@ app.start = function() {
     var baseUrl = 'http://' + app.get('host') + ':' + app.get('port');
     app.emit('started', baseUrl);
     console.log('LoopBack server listening @ %s%s', baseUrl, '/');
+    
+    var Socket = require('./socket');
   });
 };
 
