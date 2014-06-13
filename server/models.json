@@ -116,7 +116,7 @@
         "user": {
           "model": "User",
           "type": "belongsTo",
-          "foreignKey": "userId",
+          "foreignKey": "id",
           "index": true
         }
       }
