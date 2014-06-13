@@ -3,7 +3,7 @@ var path = require('path');
 var app = module.exports = loopback();
 var started = new Date();
 var Primus = require('primus');
-
+var http = require('http');
 
 /*
  * 1. Configure LoopBack models and datasources
