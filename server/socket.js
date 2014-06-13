@@ -1,4 +1,4 @@
-var app = require('../app');
+var app = require('./app');
 var Location = app.models.Location;
 
 // Socket stuff
