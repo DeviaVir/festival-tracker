@@ -19,3 +19,5 @@ client/assets/css/app.css
 *.scssc
 
 *.map
+
+server/sftp-config.json
