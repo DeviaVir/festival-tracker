@@ -3,6 +3,13 @@
     "defaultForType": "db",
     "connector": "memory"
   },
+  "mongodb": {
+    "defaultForType": "mongodb",
+    "connector": "loopback-connector-mongodb",
+    "host": "127.0.0.1",
+    "database": "defqon1",
+    "port": 27017
+  },
   "mysql": {
     "defaultForType": "mysql",
     "connector": "mysql",

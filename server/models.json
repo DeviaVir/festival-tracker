@@ -62,7 +62,7 @@
         }
       ]
     },
-    "dataSource": "mysql",
+    "dataSource": "mongodb",
     "public": true,
     "properties": {
       "name": {
@@ -138,7 +138,7 @@
       }
     },
     "public": true,
-    "dataSource": "mysql",
+    "dataSource": "mongodb",
     "plural": "crews"
   },
   "location": {
@@ -204,7 +204,7 @@
       }
     },
     "public": true,
-    "dataSource": "mysql",
+    "dataSource": "mongodb",
     "plural": "locations"
   },
   "accessToken": {
@@ -219,7 +219,7 @@
         }
       ]
     },
-    "dataSource": "mysql",
+    "dataSource": "mongodb",
     "public": true
   },
   "application": {
