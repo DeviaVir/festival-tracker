@@ -83,29 +83,22 @@ angular.module('defqon.controllers', ['defqon.services'])
       limit: 5,
       order: 'created DESC'
     };
+    $scope.tPaths = [];
     $scope.getLocation = function() {
       console.log('Update the map');
 
       // receive incoming map msgs
+      $scope.locations = [];
       primus.$on('map', function (data) {
-        console.log(data);
-      });
-
-      // @todo: use a socket for this
-      Location.find({filter: $scope.locationFilters}, function(locations) {
-        $scope.tPaths = [];
-        $scope.count = 0;
-        locations.forEach(function(c) {
-          if($scope.count === 0) {
-            $scope.markers['user'].lat = parseFloat(c.x);
-            $scope.markers['user'].lng = parseFloat(c.y);
-            $scope.markers['user'].message = $scope.mapUserName;
-          }
-
+        $scope.markers['user'].lat = parseFloat(data.x);
+        $scope.markers['user'].lng = parseFloat(data.y);
+        $scope.markers['user'].message = $scope.mapUserName;
+        $scope.locations.push(data);
+        
+        $scope.locations.forEach(function(c) {
           $scope.tPaths.push({
             lat: parseFloat(c.x), lng: parseFloat(c.y)
           });
-          $scope.count++;
         });
         $scope.paths['p1'].latlngs = $scope.tPaths;
       });

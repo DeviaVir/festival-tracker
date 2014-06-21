@@ -43,7 +43,7 @@ module.exports = function(grunt) {
           './assets/js/leaflet.js',
           './assets/js/angular/leaflet.js'
         ],
-        tasks: ['concat:frontend','uglify:frontend'],
+        tasks: ['concat:frontend'],
         options: {
           livereload: true
         }
@@ -94,4 +94,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('loopback', ['loopback_angular','concat:frontend','uglify:frontend']);
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('minify', ['uglify:frontend']);
 };
