@@ -30,6 +30,9 @@
     <div class="item item-divider assertive" ng-if="registerError">
       An error has occured.
     </div>
+    <div class="item item-divider assertive" ng-if="registerSuccess">
+      Registration successful. You can now log in.
+    </div>
     <form class="item item-text-wrap" ng-submit="register()">
       <div class="list list-inset">
         <label class="item item-input">

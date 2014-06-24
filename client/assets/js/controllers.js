@@ -19,8 +19,8 @@ angular.module('defqon.controllers', ['defqon.services'])
   };
 
   // Get other users to show in sidebar
-  $scope.users = []; $scope.userFilters = {limit: 30, order: 'created ASC'};
-  User.find({filter: $scope.userFilters}, function(users) {
+  $scope.users = [];
+  User.find({filter: {limit: 30, order: 'created ASC'}}, function(users) {
     $scope.users = users;
   });
 
@@ -40,7 +40,7 @@ angular.module('defqon.controllers', ['defqon.services'])
   };
 
   $scope.currentUser.$promise.then(function() {
-
+    console.log($scope.currentUser.accessToken);
     // Function used to send current location on change
     $scope.sendLocation = function(position) {
       primus.send('location', {
@@ -111,7 +111,7 @@ angular.module('defqon.controllers', ['defqon.services'])
     center: {
       lat: 52.4361702,
       lng: 5.7484867,
-      zoom: 10 //15 // = perfect defqon
+      zoom: 15
     },
     defaults: {
       scrollWheelZoom: false,
@@ -128,10 +128,6 @@ angular.module('defqon.controllers', ['defqon.services'])
 
 .controller('LoginCtrl', function($scope, $routeParams, User, $location, AppAuth) {
   $scope.registration = {};
-  $scope.credentials = {
-    email: 'foo@bar.com',
-    password: '123456'
-  };
 
   $scope.login = function() {
     $scope.loginResult = User.login({include: 'user', rememberMe: true}, $scope.credentials,
@@ -149,7 +145,7 @@ angular.module('defqon.controllers', ['defqon.services'])
   $scope.register = function() {
     $scope.user = User.save($scope.registration,
       function() {
-        // success
+        $scope.registerSuccess = true;
       },
       function(res) {
         $scope.registerError = res.data.error;
