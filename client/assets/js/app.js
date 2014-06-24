@@ -39,6 +39,11 @@ angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon
     controller: 'AppCtrl'
   });
 
+  $routeProvider.when('/invite', {
+    templateUrl: 'templates/invite.html',
+    controller: 'InviteCtrl'
+  });
+
   $routeProvider.when('/register', {
     templateUrl: 'templates/register.html',
     controller: 'RegisterCtrl'
