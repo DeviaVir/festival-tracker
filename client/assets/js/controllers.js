@@ -1,6 +1,6 @@
 angular.module('defqon.controllers', ['defqon.services'])
 
-.controller('AppCtrl', function($scope, User, Location, $location, AppAuth, $routeParams, primus) {
+.controller('AppCtrl', function($scope, User, Location, $location, AppAuth, $routeParams, primus, $timeout) {
   AppAuth.ensureHasCurrentUser(User);
   $scope.currentUser = AppAuth.currentUser;
 
@@ -89,8 +89,14 @@ angular.module('defqon.controllers', ['defqon.services'])
           $scope.markers['user'].lat = parseFloat(data.x);
           $scope.markers['user'].lng = parseFloat(data.y);
           $scope.markers['user'].message = $scope.mapUserName;
+
+          if('userId' in $routeParams) {
+            $timeout(function() {
+              $scope.markers['user'].focus = true;
+            }, 1000);
+          }
+
           $scope.locations.push(data);
-          
           $scope.locations.forEach(function(c) {
             $scope.tPaths.push({
               lat: parseFloat(c.x), lng: parseFloat(c.y)
@@ -115,6 +121,63 @@ angular.module('defqon.controllers', ['defqon.services'])
           opacity: 0.9,
           detectRetina: true,
           reuseTiles: true,
+      }
+    },
+    geojson: {
+      data: {
+        "type":"FeatureCollection","features":[
+        {
+          "type": "Feature",
+          "id": "BLUE",
+          "properties": {
+              "name":"Blue",
+              "style": {
+                "weight": 2,
+                "color": "#5a472c",
+                "opacity": 1,
+                "fillColor": "#5795ae",
+                "fillOpacity": 0.8
+              }
+          },
+          "geometry": {
+            "type":"Polygon",
+            "coordinates":[
+              [
+                [5.75073,52.43912],
+                [5.74949,52.4386],
+                [5.7485,52.4394],
+                [5.74851,52.4394],
+                [5.74983,52.43992]
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "UV",
+          "properties": {
+              "name":"UV",
+              "style": {
+                "weight": 2,
+                "color": "#000",
+                "opacity": 1,
+                "fillColor": "#594b97",
+                "fillOpacity": 0.8
+              }
+          },
+          "geometry": {
+            "type":"Polygon",
+            "coordinates":[
+              [
+                [5.75277,52.43992],
+                [5.75153,52.43941],
+                [5.75054,52.4402],
+                [5.75055,52.4402],
+                [5.75187,52.44072]
+              ]
+            ]
+          }
+        }]
       }
     },
     markers: $scope.markers,
