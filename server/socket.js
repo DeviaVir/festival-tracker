@@ -19,6 +19,14 @@ console.log('Socket listening on %s', 20002);
 primus.on('connection', function (spark) {
   console.log('Detected connection');
 
+  spark.on('update', function(data) {
+    console.log('Received update request');
+    // Send all known data
+    Location.find({'filter': {'limit': 100, 'order': 'created ASC'}}, function(result, data) {
+      spark.send('map', data);
+    });
+  });
+
   // receive incoming location updates
   spark.on('location', function (data) {
     console.log('location', data); // => ping-pong

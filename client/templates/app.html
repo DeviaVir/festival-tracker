@@ -48,12 +48,12 @@
     </header>
     <content has-header="true">
       <ul class="list">
-        <li ng-repeat="item in users">
+        <li ng-repeat="item in sidebarUsers">
           <a href="/#/home/{{ item.id }}/{{ item.name }}" class="item">{{ item.name }}</a>
         </li>
-        <li>
+        <!--<li>
           <a href="/#/invite" class="item text-center bold">INVITE</a>
-        </li>
+        </li>-->
       </ul>
     </content>
   </side-menu>

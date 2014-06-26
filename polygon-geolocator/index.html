@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Get Latitude and Longitude Coordinates of a Polygon - Google Maps API v3</title>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script type="text/javascript">
+        var bermudaTriangle;
+        function initialize() {
+            var myLatLng = new google.maps.LatLng(28.991625, 77.706587);
+            var mapOptions = {
+                zoom: 6,
+                center: myLatLng,
+                mapTypeId: google.maps.MapTypeId.RoadMap
+            };
+
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+
+
+            var triangleCoords = [
+            new google.maps.LatLng(28.525416, 79.870605),
+            new google.maps.LatLng(27.190518, 77.530518),
+            new google.maps.LatLng(29.013807, 77.67334)
+
+        ];
+
+            // Construct the polygon
+            bermudaTriangle = new google.maps.Polygon({
+                paths: triangleCoords,
+                draggable: true,
+                editable: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+            });
+
+            bermudaTriangle.setMap(map);
+            google.maps.event.addListener(bermudaTriangle, "dragend", getPolygonCoords);
+            google.maps.event.addListener(bermudaTriangle.getPath(), "insert_at", getPolygonCoords);
+            google.maps.event.addListener(bermudaTriangle.getPath(), "remove_at", getPolygonCoords);
+            google.maps.event.addListener(bermudaTriangle.getPath(), "set_at", getPolygonCoords);
+        }
+
+        function getPolygonCoords() {
+            var len = bermudaTriangle.getPath().getLength();
+            var htmlStr = "";
+            for (var i = 0; i < len; i++) {
+                htmlStr += bermudaTriangle.getPath().getAt(i).toUrlValue(5) + "<br>";
+            }
+            document.getElementById('info').innerHTML = htmlStr;
+        }        
+    </script>
+</head>
+<body onload="initialize()">
+    <div id="map-canvas" style="height: 350px; width: auto;">
+    </div>
+    <div id="info" style="position: absolute; font-family: Arial; font-size: 14px;">
+    </div>
+</body>
+</html>
