@@ -28,7 +28,7 @@ angular.module('defqon.controllers', ['defqon.services'])
     $scope.currentUser.$promise.then(function() {
       // Get other users to show in sidebar
       $scope.users = {};
-      User.find({filter: {limit: 100, order: 'created ASC'}}, function(users) {
+      User.find({filter: {order: 'created ASC'}}, function(users) {
         $scope.sidebarUsers = users;
         users.forEach(function(user) {
           if(!(user.id in $scope.users))
@@ -90,7 +90,7 @@ angular.module('defqon.controllers', ['defqon.services'])
         $scope.locations = [];
         primus.$on('map', function (data) {
           if(data instanceof Array) {
-            $scope.usedUsers = [];
+            $scope.usedUsers = {};
             data.forEach(function(location) {
               $scope.focus = false;
               if('userId' in $routeParams && $scope.mapUserId != location.userId)
@@ -103,59 +103,57 @@ angular.module('defqon.controllers', ['defqon.services'])
                 $scope.paths[(location.userId)].latlngs = $scope.tPaths;
               }
               else {
-                if('userId' in $routeParams) {
-                  $scope.focus = true;
-                }
-                $scope.markers[(location.userId)] = {
-                  lat: parseFloat(location.x),
-                  lng: parseFloat(location.y),
-                  message: $scope.users[(location.userId)],
-                  focus: $scope.focus,
-                  draggable: false,
-                  icon: {
-                    type: 'div',
-                    iconSize: [1, 1],
-                    popupAnchor:  [0, 0],
-                    html: '<div class="leaflet-div-icon-content" style="background-color: ' + stringToColour(location.userId) + ';"></div>'
-                  }
-                };
+                $timeout(function() {
+                  $scope.markers[(location.userId)] = {
+                    lat: parseFloat(location.x),
+                    lng: parseFloat(location.y),
+                    message: $scope.users[(location.userId)],
+                    focus: ('userId' in $routeParams ? true : false),
+                    draggable: false,
+                    icon: {
+                      type: 'div',
+                      iconSize: [3, 3],
+                      popupAnchor:  [0, 0],
+                      html: '<div class="leaflet-div-icon-content" style="background-color: ' + stringToColour(location.userId) + ';"></div>'
+                    }
+                  };
+                }, 100);
                 $scope.paths[(location.userId)] = {
                   color: stringToColour(location.userId),
                   weight: 1,
                   latlngs: [{lat: 0, lng: 0}]
                 };
-                $scope.usedUsers.push(location.userId);
+                $scope.usedUsers[(location.userId)] = true;
               }
             });
           }
           else {
             $scope.userData = data;
-            $scope.focus = false;
-            if('userId' in $routeParams) {
-              $scope.focus = true;
+            if('userId' in $routeParams && $scope.mapUserId != $scope.userData.userId)
+              return true;
 
-              // When we're looking directly at one user, ignore the other updates coming in
-              if($scope.mapUserId != $scope.userData.userId)
-                return true;
-            }
-            $scope.markers[($scope.userData.userId)] = {
-              lat: parseFloat($scope.userData.x),
-              lng: parseFloat($scope.userData.y),
-              message: $scope.users[($scope.userData.userId)],
-              focus: $scope.focus,
-              draggable: false,
-              icon: {
-                type: 'div',
-                iconSize: [1, 1],
-                popupAnchor:  [0, 0],
-                html: '<div class="leaflet-div-icon-content" style="background-color: ' + stringToColour($scope.userData.userId) + ';"></div>'
-              }
-            };
+            $timeout(function() {
+              $scope.markers[($scope.userData.userId)] = {
+                lat: parseFloat($scope.userData.x),
+                lng: parseFloat($scope.userData.y),
+                message: $scope.users[($scope.userData.userId)],
+                focus: ('userId' in $routeParams ? true : false),
+                draggable: false,
+                icon: {
+                  type: 'div',
+                  iconSize: [3, 3],
+                  popupAnchor:  [0, 0],
+                  html: '<div class="leaflet-div-icon-content" style="background-color: ' + stringToColour($scope.userData.userId) + ';"></div>'
+                }
+              };
+            }, 100);
           }
         });
       };
       $scope.getLocation();
-      primus.send('update');
+      primus.send('update', {
+        userId: ('userId' in $routeParams) ? $routeParams.userId : null
+      });
     });
   }
 
@@ -448,100 +446,100 @@ angular.module('defqon.controllers', ['defqon.services'])
           case 'Red':
             return {
               "color": "#bd001d",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#bd001d",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Blue':
             return {
               "color": "#5795ae",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#5795ae",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'UV':
             return {
               "color": "#594b97",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#594b97",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Green':
             return {
               "color": "#95ae2d",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#95ae2d",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Purple':
             return {
               "color": "#641b64",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#641b64",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Indigo':
             return {
               "color": "#262a6c",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#262a6c",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'White':
             return {
               "color": "#ffffff",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#ffffff",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Magenta':
             return {
               "color": "#e00b63",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#e00b63",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Orange':
             return {
               "color": "#de3e13",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#de3e13",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Brown':
             return {
               "color": "#542c22",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#542c22",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Black':
             return {
               "color": "#000000",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#000000",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Yellow':
             return {
               "color": "#fab827",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#fab827",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Silver':
             return {
               "color": "#c3cacd",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#c3cacd",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
           case 'Gold':
             return {
               "color": "#83673e",
-              "opacity": 1,
+              "opacity": 0.9,
               "fillColor": "#83673e",
-              "fillOpacity": 0.8
+              "fillOpacity": 0.4
             };
         }
       }

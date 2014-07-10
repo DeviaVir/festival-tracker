@@ -83,4 +83,3 @@ angular.module('defqon', ['ionic', 'ngRoute', 'ngAnimate', 'lbServices', 'defqon
     console.log('$location.path()', $location.path());
   });
 });
-

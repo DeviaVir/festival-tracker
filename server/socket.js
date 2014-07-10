@@ -1,5 +1,6 @@
 var app = require('./app');
 var Location = app.models.Location;
+var User = app.models.User;
 
 // Socket stuff
 var Primus  = require('primus');
@@ -21,9 +22,22 @@ primus.on('connection', function (spark) {
 
   spark.on('update', function(data) {
     console.log('Received update request');
+    var myUser = (data && 'userId' in data && data.userId !== null ? data.userId : null);
+    var filter = {order: 'created DESC'};
+    if(myUser !== null) {
+      filter.where = {id: myUser};
+    }
     // Send all known data
-    Location.find({'filter': {'limit': 100, 'order': 'created ASC'}}, function(result, data) {
-      spark.send('map', data);
+    User.find(filter, function(r, users) {
+      if(users) {
+        users.forEach(function(user) {
+          var locationFilter = {where: {userId: user.id}, limit: 50, order: 'updated DESC'};
+          Location.find(locationFilter, function(result, data) {
+            console.log(data);
+            spark.send('map', data);
+          });
+        });
+      }
     });
   });
 
